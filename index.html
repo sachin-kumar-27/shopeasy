@@ -1,79 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ShopEasy - Full Stack Store</title>
-<style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Arial}
-body{background:#f1f5f9}
-.header{background:#0f172a;color:white;padding:20px;text-align:center}
-.cart-bar{background:white;padding:12px 20px;display:flex;justify-content:space-between;position:sticky;top:0;box-shadow:0 2px 5px rgba(0,0,0,0.1)}
-#cart-count{background:#f97316;color:white;padding:4px 10px;border-radius:20px;font-weight:bold}
-.container{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px;padding:20px;max-width:1000px;margin:auto}
-.card{background:white;padding:20px;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,0.1)}
-.price{color:#16a34a;font-weight:bold;margin:10px 0}
-.btn{background:#f97316;color:white;border:none;padding:10px 16px;border-radius:6px;cursor:pointer;width:100%;font-weight:bold}
-.btn:hover{background:#ea580c}
-#cart-items{max-width:1000px;margin:0 auto;padding:0 20px 40px}
-.cart-item{background:white;padding:12px;display:flex;justify-content:space-between;margin-bottom:8px;border-radius:8px}
-/* Order Form Popup */
-#orderModal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);justify-content:center;align-items:center;z-index:100}
-.modal{background:white;padding:25px;border-radius:12px;width:90%;max-width:400px}
-.modal input{width:100%;padding:10px;margin:8px 0;border:1px solid #ccc;border-radius:6px}
-.modal h2{margin-bottom:10px;text-align:center}
-.close{background:#ccc;color:black;margin-top:10px}
-</style>
-</head>
-<body>
-<div class="header"><h1>🛒 ShopEasy - Full Stack Store</h1><p>React | Node.js | SQL | Gen AI</p></div>
+<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>ShopEasy</title><style>*{margin:0;padding:0;box-sizing:border-box;font-family:Arial}body{background:#f1f5f9}.header{background:#0f172a;color:white;padding:20px;text-align:center}.cart-bar{background:white;padding:12px 20px;display:flex;justify-content:space-between;position:sticky;top:0;box-shadow:0 2px 5px #0002}#cart-count{background:#f97316;color:white;padding:4px 10px;border-radius:20px;font-weight:bold}.container{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px;padding:20px;max-width:1000px;margin:auto}.card{background:white;padding:20px;border-radius:12px;box-shadow:0 2px 8px #0001}.price{color:#16a34a;font-weight:bold;margin:10px 0}.btn{background:#f97316;color:white;border:none;padding:10px 16px;border-radius:6px;cursor:pointer;width:100%;font-weight:bold}.cart-item{background:white;padding:12px;display:flex;justify-content:space-between;margin-bottom:8px;border-radius:8px;max-width:1000px;margin:8px auto}#orderModal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);justify-content:center;align-items:center;z-index:100}.modal{background:white;padding:25px;border-radius:12px;width:90%;max-width:400px}.modal input{width:100%;padding:10px;margin:8px 0;border:1px solid #ccc;border-radius:6px}</style></head><body>
+<div class="header"><h1>🛒 ShopEasy - Full Stack Store</h1></div>
 <div class="cart-bar"><span>🛒 Cart: <span id="cart-count">0</span> items</span><span>Total: ₹<span id="total">0</span></span></div>
 <div class="container">
-<div class="card"><h3>iPhone 15</h3><p>Latest Apple smartphone</p><div class="price">₹79,999</div><button class="btn" onclick="addToCart('iPhone 15',79999)">Add to Cart</button></div>
-<div class="card"><h3>MacBook Air</h3><p>Superfast M2 Chip</p><div class="price">₹99,999</div><button class="btn" onclick="addToCart('MacBook Air',99999)">Add to Cart</button></div>
-<div class="card"><h3>Nike Shoes</h3><p>Running shoes</p><div class="price">₹5,999</div><button class="btn" onclick="addToCart('Nike Shoes',5999)">Add to Cart</button></div>
+<div class="card"><h3>iPhone 15</h3><div class="price">₹79,999</div><button class="btn" onclick="addToCart('iPhone 15',79999)">Add to Cart</button></div>
+<div class="card"><h3>MacBook Air</h3><div class="price">₹99,999</div><button class="btn" onclick="addToCart('MacBook Air',99999)">Add to Cart</button></div>
+<div class="card"><h3>Nike Shoes</h3><div class="price">₹5,999</div><button class="btn" onclick="addToCart('Nike Shoes',5999)">Add to Cart</button></div>
 </div>
 <div id="cart-items"></div>
-
-<!-- Order Form -->
-<div id="orderModal"><div class="modal">
-<h2>Place Your Order</h2>
-<input id="cname" placeholder="Your Name" required>
-<input id="cphone" placeholder="Phone Number" required>
-<input id="caddr" placeholder="Full Address" required>
-<p style="margin:10px 0;font-weight:bold">Total Payable: ₹<span id="modalTotal">0</span> (COD)</p>
-<button class="btn" onclick="placeOrder()">Confirm Order</button>
-<button class="btn close" onclick="closeModal()">Cancel</button>
-</div></div>
-
+<div id="orderModal"><div class="modal"><h2>Place Your Order</h2><input id="cname" placeholder="Your Name"><input id="cphone" placeholder="Phone Number"><input id="caddr" placeholder="Full Address"><p style="margin:10px 0;font-weight:bold">Total: ₹<span id="modalTotal">0</span> (COD)</p><button class="btn" onclick="placeOrder()">Confirm Order</button><button class="btn" style="background:#ccc;color:black;margin-top:8px" onclick="closeModal()">Cancel</button></div></div>
 <script>
 let cart=[],total=0;
-function addToCart(name,price){
-cart.push({name,price});total+=price;updateCart();
-alert(name+' added!');
-}
-function updateCart(){
-document.getElementById('cart-count').innerText=cart.length;
-document.getElementById('total').innerText=total;
-document.getElementById('cart-items').innerHTML=cart.map((item,i)=>`
-<div class="cart-item"><span>${item.name} - ₹${item.price}</span><button onclick="removeItem(${i})" style="color:red;border:none;background:none;cursor:pointer">Remove</button></div>
-`).join('') + (cart.length? `<div style="text-align:center;margin-top:15px"><button onclick="openModal()" class="btn" style="width:auto">Checkout ₹${total}</button></div>`:'');
-}
-function removeItem(i){total-=cart[i].price;cart.splice(i,1);updateCart();}
-function openModal(){
-if(cart.length==0){alert('Cart is empty!');return;}
-document.getElementById('modalTotal').innerText=total;
-document.getElementById('orderModal').style.display='flex';
-}
-function closeModal(){document.getElementById('orderModal').style.display='none';}
-function placeOrder(){
-let name=document.getElementById('cname').value;
-let phone=document.getElementById('cphone').value;
-let addr=document.getElementById('caddr').value;
-if(!name||!phone||!addr){alert('Please fill all fields!');return;}
-alert(`Thank you ${name}! \nYour order of ₹${total} is confirmed!\nWill be delivered to: ${addr}\n(COD)`);
-cart=[];total=0;updateCart();closeModal();
-document.getElementById('cname').value='';document.getElementById('cphone').value='';document.getElementById('caddr').value='';
-}
-</script>
-</body>
-</html>
+function addToCart(name,price){cart.push({name,price});total+=price;updateCart();alert(name+' added!')}
+function updateCart(){document.getElementById('cart-count').innerText=cart.length;document.getElementById('total').innerText=total;document.getElementById('cart-items').innerHTML=cart.map((it,i)=>`<div class="cart-item"><span>${it.name} - ₹${it.price}</span><button onclick="removeItem(${i})" style="color:red;border:none;background:none;cursor:pointer">Remove</button></div>`).join('')+(cart.length?`<div style="text-align:center;margin-top:15px"><button onclick="openModal()" class="btn" style="width:auto">Checkout ₹${total}</button></div>`:'')}
+function removeItem(i){total-=cart[i].price;cart.splice(i,1);updateCart()}
+function openModal(){if(!cart.length){alert('Cart empty!');return;}document.getElementById('modalTotal').innerText=total;document.getElementById('orderModal').style.display='flex'}
+function closeModal(){document.getElementById('orderModal').style.display='none'}
+function placeOrder(){let n=document.getElementById('cname').value,p=document.getElementById('cphone').value,a=document.getElementById('caddr').value;if(!n||!p||!a){alert('Sab fields bharo!');return;}alert('Order Confirmed!\n\nName: '+n+'\nPhone: '+p+'\nAddress: '+a+'\nTotal: ₹'+total+'\n\nThank you! COD order placed.');cart=[];total=0;updateCart();closeModal();document.getElementById('cname').value='';document.getElementById('cphone').value='';document.getElementById('caddr').value='';}
+</script></body></html>
