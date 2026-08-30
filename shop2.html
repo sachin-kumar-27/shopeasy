@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ShopEasy - My Store</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial}
+header{background:#000;color:#fff;padding:15px;text-align:center}
+.products{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:10px}
+.card{border:1px solid #ddd;border-radius:8px;padding:10px;text-align:center}
+.card img{width:100%;height:120px;object-fit:cover;border-radius:5px}
+.card button{background:#000;color:#fff;border:none;padding:8px 12px;border-radius:5px;margin-top:8px;width:100%}
+#cartBar{position:fixed;bottom:0;left:0;width:100%;background:#000;color:#fff;padding:15px;display:flex;justify-content:space-between;align-items:center}
+#checkoutBox{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);padding:20px;overflow:auto}
+#checkoutBox>div{background:#fff;padding:20px;border-radius:10px;max-width:400px;margin:50px auto}
+input,textarea{width:100%;padding:10px;margin:5px 0;border:1px solid #ddd;border-radius:5px}
+</style>
+</head>
+<body>
+<header><h2>🛒 My ShopEasy Store</h2></header>
+<div class="products">
+<div class="card"><img src="https://via.placeholder.com/200"><h4>T-Shirt</h4><p>₹499</p><button onclick="add('T-Shirt',499)">Add to Cart</button></div>
+<div class="card"><img src="https://via.placeholder.com/200"><h4>Shoes</h4><p>₹999</p><button onclick="add('Shoes',999)">Add to Cart</button></div>
+<div class="card"><img src="https://via.placeholder.com/200"><h4>Watch</h4><p>₹1499</p><button onclick="add('Watch',1499)">Add to Cart</button></div>
+<div class="card"><img src="https://via.placeholder.com/200"><h4>Bag</h4><p>₹799</p><button onclick="add('Bag',799)">Add to Cart</button></div>
+</div>
+<div id="cartBar">
+<span id="cartCount">0 items - ₹0</span>
+<div><button onclick="clearCart()" style="background:red;color:#fff;border:none;padding:6px 10px;border-radius:4px;margin-right:5px">Cancel</button>
+<button onclick="openCheckout()" style="background:#25D366;color:#fff;border:none;padding:6px 15px;border-radius:4px">Order</button></div>
+</div>
+<div id="checkoutBox"><div>
+<h3>Checkout</h3>
+<input id="cName" placeholder="Apna Naam">
+<input id="cPhone" placeholder="Phone Number">
+<textarea id="cAddr" placeholder="Full Address"></textarea>
+<p id="cSummary"></p>
+<button onclick="placeOrder()" style="background:#000;color:#fff;width:100%;padding:12px;border:none;border-radius:5px;margin-top:10px">Confirm Order - WhatsApp</button>
+<button onclick="closeCheckout()" style="background:#ddd;width:100%;padding:10px;border:none;border-radius:5px;margin-top:5px">Wapas Jao</button>
+</div></div>
+<script>
+let cart=[];
+function add(name,price){cart.push({name,price});update()}
+function update(){let total=cart.reduce((s,i)=>s+i.price,0);document.getElementById('cartCount').innerText=`${cart.length} items - ₹${total}`}
+function clearCart(){if(confirm('Cart khali karna hai?')){cart=[];update();}}
+function openCheckout(){if(cart.length==0){alert('Pehle kuch Add karo');return}let total=cart.reduce((s,i)=>s+i.price,0);document.getElementById('cSummary').innerText=cart.map(i=>i.name).join(', ')+' | Total: ₹'+total;document.getElementById('checkoutBox').style.display='block'}
+function closeCheckout(){document.getElementById('checkoutBox').style.display='none'}
+function placeOrder(){
+ let name=document.getElementById('cName').value,phone=document.getElementById('cPhone').value,addr=document.getElementById('cAddr').value;
+ if(!name||!phone||!addr){alert('Saari detail bharo');return}
+ let total=cart.reduce((s,i)=>s+i.price,0);let items=cart.map(i=>i.name).join(', ');
+ let orders=JSON.parse(localStorage.getItem('shopeasy_orders')||'[]');
+ orders.push({name,phone,addr,items,total,date:new Date().toLocaleString(),status:'Pending'});
+ localStorage.setItem('shopeasy_orders',JSON.stringify(orders));
+ let msg=`*New Order*%0AName:${name}%0APhone:${phone}%0AAddress:${addr}%0AItems:${items}%0ATotal:₹${total}`;
+ window.location.href=`https://wa.me/919310103698?text=${msg}`;
+ cart=[];update();closeCheckout();
+}
+</script>
+</body>
+</html>
