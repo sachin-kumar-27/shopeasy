@@ -7,7 +7,7 @@
 <div class="card"><h3>Nike Shoes</h3><div class="price">₹5,999</div><button class="btn" onclick="addToCart('Nike Shoes',5999)">Add to Cart</button></div>
 </div>
 <div id="cart-items"></div>
-<div id="orderModal"><div class="modal"><h2>Place Your Order</h2><input id="cname" placeholder="Your Name"><input id="cphone" placeholder="Phone Number"><input id="caddr" placeholder="Full Address"><p style="margin:10px 0;font-weight:bold">Total: ₹<span id="modalTotal">0</span> (COD)</p><button class="btn" onclick="placeOrder()">Confirm Order</button><button class="btn" style="background:#ccc;color:black;margin-top:8px" onclick="closeModal()">Cancel</button></div></div>
+<div id="orderModal"><div class="modal"><h2>Place Your Order</h2><input id="cname" placeholder="Your Name"><input id="cphone" placeholder="Phone Number"><input id="caddr" placeholder="Full Address"><p style="margin:10px 0;font-weight:bold">Total: ₹<span id="modalTotal">0</span> (COD)</p><button class="btn" onclick="placeOrder()">Confirm Order - WhatsApp</button><button class="btn" style="background:#ccc;color:black;margin-top:8px" onclick="closeModal()">Cancel</button></div></div>
 <script>
 let cart=[],total=0;
 function addToCart(name,price){cart.push({name,price});total+=price;updateCart();alert(name+' added!')}
@@ -15,5 +15,20 @@ function updateCart(){document.getElementById('cart-count').innerText=cart.lengt
 function removeItem(i){total-=cart[i].price;cart.splice(i,1);updateCart()}
 function openModal(){if(!cart.length){alert('Cart empty!');return;}document.getElementById('modalTotal').innerText=total;document.getElementById('orderModal').style.display='flex'}
 function closeModal(){document.getElementById('orderModal').style.display='none'}
-function placeOrder(){let n=document.getElementById('cname').value,p=document.getElementById('cphone').value,a=document.getElementById('caddr').value;if(!n||!p||!a){alert('Sab fields bharo!');return;}alert('Order Confirmed!\n\nName: '+n+'\nPhone: '+p+'\nAddress: '+a+'\nTotal: ₹'+total+'\n\nThank you! COD order placed.');cart=[];total=0;updateCart();closeModal();document.getElementById('cname').value='';document.getElementById('cphone').value='';document.getElementById('caddr').value='';}
+function placeOrder(){
+let n=document.getElementById('cname').value,p=document.getElementById('cphone').value,a=document.getElementById('caddr').value;
+if(!n||!p||!a){alert('Sab fields bharo!');return;}
+
+// APNA WHATSAPP NUMBER YAHAN DAAL - 91 ke saath
+let myWhatsappNumber = "919999999999";
+
+let itemsList = cart.map(it=> `${it.name} (₹${it.price})`).join('%0A- ');
+let message = `*NEW ORDER - ShopEasy* %0A%0A*Customer Details:*%0AName: ${n}%0APhone: ${p}%0AAddress: ${a}%0A%0A*Order:*%0A- ${itemsList}%0A%0A*Total: ₹${total} (COD)*`;
+
+window.open(`https://wa.me/${myWhatsappNumber}?text=${message}`, '_blank');
+
+alert('Order Confirmed! WhatsApp pe redirect ho raha hai...');
+cart=[];total=0;updateCart();closeModal();
+document.getElementById('cname').value='';document.getElementById('cphone').value='';document.getElementById('caddr').value='';
+}
 </script></body></html>
