@@ -1,12 +1,35 @@
 <!DOCTYPE html>
-<html><head><link rel="stylesheet" href="style.css"></head>
+<html>
+<head>
+<title>Signup - ShopEasy</title>
+<style>
+body{font-family:Arial; background:#f5f5f5; display:flex; justify-content:center; align-items:center; height:100vh}
+.box{background:white; padding:30px; border-radius:10px; width:300px; box-shadow:0 0 10px rgba(0,0,0,0.1)}
+input{width:100%; padding:10px; margin:8px 0; border:1px solid #ccc; border-radius:5px}
+button{width:100%; padding:10px; background:#ff3c00; color:white; border:none; border-radius:5px; cursor:pointer}
+</style>
+</head>
 <body>
-<div class="auth-box">
-<h2>Create Account</h2>
-<input id="name" placeholder="Name">
+<div class="box">
+<h2>Sign Up</h2>
+<input id="name" placeholder="Your Name">
 <input id="email" placeholder="Email">
 <input id="pass" type="password" placeholder="Password">
-<button onclick="signup()">Signup</button>
+<button onclick="doSignup()">Create Account</button>
+<p>Already have account? <a href="login.html">Login</a></p>
 </div>
-<script src="auth.js"></script>
-</body></html>
+<script>
+function doSignup(){
+  let user = {
+    name: document.getElementById('name').value,
+    email: document.getElementById('email').value,
+    pass: document.getElementById('pass').value
+  };
+  if(!user.name || !user.email) return alert('Sab bharo');
+  localStorage.setItem('shopeasy_user', JSON.stringify(user));
+  alert('Account ban gaya! Ab login karo');
+  window.location.href='login.html';
+}
+</script>
+</body>
+</html>
