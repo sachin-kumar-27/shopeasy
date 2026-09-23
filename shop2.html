@@ -49,14 +49,45 @@ function closeCheckout(){document.getElementById('checkoutBox').style.display='n
 function placeOrder(){
  let name=document.getElementById('cName').value,phone=document.getElementById('cPhone').value,addr=document.getElementById('cAddr').value;
  if(!name||!phone||!addr){alert('Saari detail bharo');return}
- let total=cart.reduce((s,i)=>s+i.price,0);let items=cart.map(i=>i.name).join(', ');
- let orders=JSON.parse(localStorage.getItem('shopeasy_orders')||'[]');
- orders.push({name,phone,addr,items,total,date:new Date().toLocaleString(),status:'Pending'});
- localStorage.setItem('shopeasy_orders',JSON.stringify(orders));
- let msg=`*New Order*%0AName:${name}%0APhone:${phone}%0AAddress:${addr}%0AItems:${items}%0ATotal:₹${total}`;
- window.location.href=`https://wa.me/919310103698?text=${msg}`;
- cart=[];update();closeCheckout();
+  // Promise wala Checkout
+function checkout() {
+  return new Promise((resolve, reject) => {
+    let name = document.getElementById('name')?.value;
+    let phone = document.getElementById('phone')?.value;
+
+    if(!name || !phone){
+      reject("Naam aur Phone bharo");
+      return;
+    }
+
+    let order = {
+      name: name,
+      phone: phone,
+      address: document.getElementById('address')?.value,
+      cart: localStorage.getItem('cart') || "T-Shirt",
+      status: "Pending"
+    };
+
+    // Success
+    const msg = `New Order: ${order.name}, ${order.phone}, ${order.cart}`;
+    const url = `https://wa.me/919999999999?text=${msg}`;
+    
+    resolve(url);
+  });
 }
-</script>
-</body>
+
+// Button par ye lagega
+async function placeOrderNow(){
+  const btn = document.getElementById('checkoutBtn');
+  try{
+    btn.innerText = "Sending...";
+    let whatsappUrl = await checkout();
+    window.open(whatsappUrl, '_blank');
+    alert("WhatsApp pe chala gaya ✅");
+  } catch(err){
+    alert(err);
+  } finally {
+    btn.innerText = "Order Now via WhatsApp";
+  }
+}
 </html>
